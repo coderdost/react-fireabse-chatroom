@@ -11,9 +11,20 @@ function App() {
   const db = getDatabase();
   const chatListRef = ref(db, 'chats');
 
+  const updateHeight=()=>{
+    const el = document.getElementById('chat');
+    if(el){
+      el.scrollTop = el.scrollHeight;
+    }
+  }
+
   useEffect(()=>{
     onChildAdded(chatListRef, (data) => {
       setChats(chats=>[...chats,data.val()])
+      setTimeout(()=>{
+        updateHeight()
+
+      },100)
     });
   },[])
 
@@ -37,7 +48,7 @@ function App() {
       </div>}
    { name? <div>
       <h3>User: {name}</h3>
-      <div className="chat-container">
+      <div id="chat" className="chat-container">
         {chats.map((c,i) => (
           <div key={i} className={`container ${c.name === name ? 'me' : ''}`}>
             <p className="chatbox">
